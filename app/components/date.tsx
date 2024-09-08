@@ -1,21 +1,28 @@
-'use client'
-
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { UseFormRegister } from 'react-hook-form';
+
+interface RegistrationFormData {
+  birthDate: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  gender: 'Male' | 'Female' | 'Others';
+  country: string;
+  district: string;
+  municipality: string;
+  city: string;
+  ward: string;
+  // Add other form fields here
+}
 
 type DateProps = {
-  register: (name: string) => void;
-  errors: Record<string, any>;
-}
-
-const schema = z.object({
-  birthDate: z.string().min(1, 'Birth date is required'),
-});
-
-interface FormData {
-  birthDate: string;
-}
+  register: UseFormRegister<RegistrationFormData>;
+  errors: {
+    birthDate?: {
+      message?: string;
+    };
+  };
+};
 
 const Date = ({ register, errors }: DateProps) => {
   return (
@@ -31,9 +38,9 @@ const Date = ({ register, errors }: DateProps) => {
           }`}
         placeholder="Select Your Birth Date"
       />
-      {errors.birthDate && <p className="text-red-500 text-sm">{errors.birthDate}</p>}
+      {errors.birthDate && <p className="text-red-500 text-sm">{errors.birthDate.message}</p>}
     </div>
   );
-}
+};
 
 export default Date;

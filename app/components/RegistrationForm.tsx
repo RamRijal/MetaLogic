@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,7 +15,7 @@ import Country from './province';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Pic from '../assets/Screenshot 2024-06-28 183729.png'
-
+// import DetailsReview from '../detailsReview/page'
 
 const schema = z.object({
     firstName: z.string().min(1, 'First Name is required'),
@@ -26,7 +27,7 @@ const schema = z.object({
 });
 
 
-interface FormData {
+interface RegistrationFormData {
     firstName: string;
     middleName?: string;
     lastName: string;
@@ -42,8 +43,7 @@ interface FormData {
 
 const RegistrationForm = () => {
     const [step, setStep] = useState(1)
-    const [submittedData, setSubmittedData] = useState<FormData | null>(null);
-
+    const [submittedData, setSubmittedData] = useState<RegistrationFormData | null>(null);
     const router = useRouter();
 
     const nextStep = () => {
@@ -51,7 +51,7 @@ const RegistrationForm = () => {
             setStep(step + 1);
         }
         else {
-            router.push('/review-details');
+            router.push('/detailsReview');
         }
     };
 
@@ -60,40 +60,21 @@ const RegistrationForm = () => {
             setStep(step - 1);
         }
     };
-    const methods = useForm<FormData>({
+
+    const methods = useForm<RegistrationFormData>({
         resolver: zodResolver(schema),
     });
 
-    const handleSubmit = (data: FormData) => {
+    const handleSubmit = (data: RegistrationFormData) => {
         setSubmittedData(data); // Store submitted data
         nextStep() // Go to the final review page
     };
 
 
 
-    if (step === 5 && submittedData) {
-        return (
-            <div className=" bg-white bg-opacity-90 rounded-lg border-2 border-gray-400 max-w-4xl mx-auto p-8">
-                <h2 className="text-4xl font-bold mb-6">Review Your Details</h2>
-                <ul className="space-y-4">
-                    <li><strong>First Name:</strong> {submittedData.firstName}</li>
-                    <li><strong>Middle Name:</strong> {submittedData.middleName || 'N/A'}</li>
-                    <li><strong>Last Name:</strong> {submittedData.lastName}</li>
-                    <li><strong>Phone:</strong> {submittedData.phone}</li>
-                    <li><strong>Birth Date:</strong> {submittedData.birthDate}</li>
-                    <li><strong>Gender:</strong> {submittedData.gender}</li>
-                </ul>
-                <button
-                    onClick={() => setStep(1)}
-                    className="mt-6 py-2 px-4 bg-blue-500 text-white rounded-md shadow hover:bg-blue-700"
-                >
-                    Go Back to Edit
-                </button>
-            </div>
-        );
-    }
+  
     return (
-        <FormProvider {...methods.register}>
+        <FormProvider {...methods}>
             <ProgressBar currentStep={step} totalSteps={4} />
             <div className=" bg-white bg-opacity-90 rounded-lg border-2 border-gray-400 max-w-4xl  mx-auto ">
                 <form onSubmit={methods.handleSubmit(handleSubmit)} className='px-10 py-5'>
@@ -274,7 +255,7 @@ const RegistrationForm = () => {
                             <h2 className=" flex justify-center text-4xl font-bold mb-10">Review Your Details</h2>
                             {/* Display all entered information here */}
                             <Image loading='lazy' alt='asd' src={Pic} width={200} height={200} />
-                                <h2 className=" flex justify-left text-3xl font-bold py-5">Personal Details</h2>
+                            <h2 className=" flex justify-left text-3xl font-bold py-5">Personal Details</h2>
                             <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
                                 <h2 className=" flex justify-left text-2xl font-bold mb-1">First Name:</h2>
                                 {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{firstName}</h2> */}
@@ -289,7 +270,7 @@ const RegistrationForm = () => {
                                 <h2 className=" flex justify-left text-2xl font-bold mb-1">Gender:</h2>
                                 {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{gender}</h2> */}
                             </div>
-                                <h2 className=" flex justify-left text-3xl font-bold py-5">Address</h2>
+                            <h2 className=" flex justify-left text-3xl font-bold py-5">Address</h2>
                             <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
                                 <h2 className=" flex justify-left text-2xl font-bold mb-1">Country:</h2>
                                 {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{firstName}</h2> */}
