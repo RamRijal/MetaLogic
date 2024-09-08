@@ -1,16 +1,21 @@
 import React from 'react';
 
-interface FormData {
+interface RegistrationFormData {
     firstName: string;
     middleName?: string;
     lastName: string;
     phone: string;
     birthDate: string;
     gender: 'Male' | 'Female' | 'Others';
+    country: string;
+    district: string;
+    municipality: string;
+    city: string;
+    ward: string;
 }
 
 interface DetailsProps {
-    submittedData: Partial<FormData> | undefined;
+    submittedData?: <RegistrationFormData | null>
 }
 
 const DetailsReview: React.FC<DetailsProps> = ({ submittedData }) => {

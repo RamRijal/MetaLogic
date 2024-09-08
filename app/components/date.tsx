@@ -12,7 +12,6 @@ interface RegistrationFormData {
   municipality: string;
   city: string;
   ward: string;
-  // Add other form fields here
 }
 
 type DateProps = {
