@@ -1,106 +1,3 @@
-// 'use client';
-
-// import React, { useState } from 'react';
-// import { useForm, FormProvider } from 'react-hook-form';
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import { useRouter } from 'next/navigation';
-// import validationSchema from '../utils/ValidationSchema';
-// import FormData from '../utils/ValidationSchema';
-// import ImageInput from './imageInput'
-// import Province from './province'
-// import District from './district'
-// import Municipality from './municipality'
-// import Gender from './gender'
-// import Date from './date'
-// import ProgressBar from './progressBar'
-
-// const RegistrationForm: React.FC = () => {
-//     const [step, setStep] = useState(1);
-//     const router = useRouter();
-//     const methods = useForm<FormData>({
-//         resolver: zodResolver(validationSchema),
-//     });
-
-//     const onSubmit = (data: FormData) => {
-//         console.log(data);
-//         // Handle form submission
-//     };
-
-//     const nextStep = () => {
-//         if (step < 4) {
-//             setStep(step + 1);
-//         } else {
-//             router.push('/review-details');
-//         }
-//     };
-
-//     const prevStep = () => {
-//         if (step > 1) {
-//             setStep(step - 1);
-//         } else {
-//             router.push('/');
-//         }
-//     };
-
-//     return (
-//         <FormProvider {...methods}>
-//             <form onSubmit={methods.handleSubmit(onSubmit)}>
-//                 <ProgressBar currentStep={step} totalSteps={4} />
-//                 {step === 1 && (
-//                     <>
-//                         <div className='bg-slate-200 w-3/4 flex flex-col justify-center items-center '>
-//                             <h2 className='text-3xl font-medium'>Personal Details</h2>
-//                             <div className='flex m-2 gap-4'>
-//                                 <input className='p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-normal text-left' type='text' {...methods.register('firstName')} placeholder="Enter Your First Name" />
-//                                 <input className='p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-normal text-left' type='text' {...methods.register('middleName')} placeholder="Enter Your Middle Name" />
-//                                 <input className='p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-normal text-left' type='text' {...methods.register('lastName')} placeholder="Enter Your Last Name" />
-//                             </div>
-//                             <div className='flex m-2'>
-//                                 <input className='p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-normal text-left' type='number' {...methods.register('phone')} placeholder="Phone" />
-//                                 <Date name="birthDate" />
-//                             </div>
-//                             <Gender name="gender" />
-//                             <div >
-//                                 <button className='bg-green-500 px-8 text-center text-white text-lg py-2 rounded-md' onClick={nextStep}>Next</button>
-//                             </div>
-//                         </div>
-//                     </>
-//                 )}
-//                 {step === 2 && (
-//                     <>
-//                         <h2>Address</h2>
-//                         <Province name="province" />
-//                         <District name="district" />
-//                         <Municipality name="municipality" />
-//                         <input {...methods.register('city')} placeholder="City" />
-//                         <input {...methods.register('ward')} placeholder="Ward" />
-//                         <button onClick={prevStep}>Back</button>
-//                         <button onClick={nextStep}>Next</button>
-//                     </>
-//                 )}
-//                 {step === 3 && (
-//                     <>
-//                         <h2>Set Your Profile Picture</h2>
-//                         <ImageInput name="profilePicture" />
-//                         <button onClick={prevStep}>Back</button>
-//                         <button onClick={nextStep}>Next</button>
-//                     </>
-//                 )}
-//                 {step === 4 && (
-//                     <>
-//                         <h2>Review Your Details</h2>
-//                         {/* Display all entered information here */}
-//                         <button onClick={prevStep}>Back</button>
-//                         <button type="submit">Submit</button>
-//                     </>
-//                 )}
-//             </form>
-//         </FormProvider>
-//     );
-// };
-
-// export default RegistrationForm;
-
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -115,6 +12,8 @@ import Municipality from './municipality';
 import ProgressBar from './progressBar';
 import Country from './province';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Pic from '../assets/Screenshot 2024-06-28 183729.png'
 
 
 const schema = z.object({
@@ -195,7 +94,7 @@ const RegistrationForm = () => {
     }
     return (
         <FormProvider {...methods.register}>
-            <ProgressBar currentStep={0} totalSteps={4} />
+            <ProgressBar currentStep={step} totalSteps={4} />
             <div className=" bg-white bg-opacity-90 rounded-lg border-2 border-gray-400 max-w-4xl  mx-auto ">
                 <form onSubmit={methods.handleSubmit(handleSubmit)} className='px-10 py-5'>
                     {step === 1 &&
@@ -352,8 +251,9 @@ const RegistrationForm = () => {
                     )}
                     {step === 3 && (
                         <>
-                            <h2>Set Your Profile Picture</h2>
+                            <h2 className=" flex justify-center text-4xl font-bold mb-10">Set Your Profile Picture</h2>
                             <ImageInput name="profilePicture" />
+
                             <div className="flex justify-end col-span-2 mt-12 gap-4">
                                 <button onClick={prevStep} type="button"
                                     className=" w-36 py-2 px-3 bg-[#688968] text-white text-lg  font-bold rounded-md shadow hover:bg-[#43056C] focus:outline-none transition-all duration-1000 ease-out"
@@ -370,8 +270,41 @@ const RegistrationForm = () => {
                     )}
                     {step === 4 && (
                         <>
-                            <h2>Review Your Details</h2>
+
+                            <h2 className=" flex justify-center text-4xl font-bold mb-10">Review Your Details</h2>
                             {/* Display all entered information here */}
+                            <Image loading='lazy' alt='asd' src={Pic} width={200} height={200} />
+                                <h2 className=" flex justify-left text-3xl font-bold py-5">Personal Details</h2>
+                            <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">First Name:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{firstName}</h2> */}
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Last Name:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{lastName}</h2> */}
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Middle Name:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{middleName}</h2> */}
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Phone:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{phone}</h2> */}
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">BirthDate:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{birthDate}</h2> */}
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Gender:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{gender}</h2> */}
+                            </div>
+                                <h2 className=" flex justify-left text-3xl font-bold py-5">Address</h2>
+                            <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Country:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{firstName}</h2> */}
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">District:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{lastName}</h2> */}
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Municipality:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{middleName}</h2> */}
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">City:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{phone}</h2> */}
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Ward:</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{birthDate}</h2> */}
+                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Gender</h2>
+                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{gender}</h2> */}
+                            </div>
+
                             <div className="flex justify-end col-span-2 mt-12 gap-4">
                                 <button onClick={prevStep} type="button"
                                     className=" w-36 py-2 px-3 bg-[#688968] text-white text-lg  font-bold rounded-md shadow hover:bg-[#43056C] focus:outline-none transition-all duration-1000 ease-out"
