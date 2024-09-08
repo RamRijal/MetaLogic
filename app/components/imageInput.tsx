@@ -1,9 +1,12 @@
 import React from 'react'
 
-const ImageInput = () => {
+type ImageInputProps = {
+    name: string;
+}
+const ImageInput = ({ name }: ImageInputProps) => {
     return (
-        <div>ImageInput</div>
-    )
+<>
+{name}</>    )
 }
 
 export default ImageInput

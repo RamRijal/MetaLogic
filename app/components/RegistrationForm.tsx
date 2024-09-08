@@ -103,10 +103,19 @@
 
 'use client'
 
-import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import * as z from 'zod';
+import Date from './date';
+import District from './district';
+import Gender from './gender';
+import ImageInput from './imageInput';
+import Municipality from './municipality';
+import ProgressBar from './progressBar';
+import Country from './province';
+import { useRouter } from 'next/navigation';
+
 
 const schema = z.object({
     firstName: z.string().min(1, 'First Name is required'),
@@ -117,6 +126,7 @@ const schema = z.object({
     gender: z.enum(['Male', 'Female', 'Others']),
 });
 
+
 interface FormData {
     firstName: string;
     middleName?: string;
@@ -124,149 +134,263 @@ interface FormData {
     phone: string;
     birthDate: string;
     gender: 'Male' | 'Female' | 'Others';
+    country: string;
+    district: string;
+    municipality: string;
+    city: string;
+    ward: string;
 }
 
 const RegistrationForm = () => {
-    const { register, handleSubmit, formState: { errors }, } = useForm<FormData>({ resolver: zodResolver(schema), });
-    const onSubmit = (data: FormData) => {
-        console.log(data);
+    const [step, setStep] = useState(1)
+    const [submittedData, setSubmittedData] = useState<FormData | null>(null);
+
+    const router = useRouter();
+
+    const nextStep = () => {
+        if (step < 4) {
+            setStep(step + 1);
+        }
+        else {
+            router.push('/review-details');
+        }
     };
 
+    const prevStep = () => {
+        if (step > 1) {
+            setStep(step - 1);
+        }
+    };
+    const methods = useForm<FormData>({
+        resolver: zodResolver(schema),
+    });
+
+    const handleSubmit = (data: FormData) => {
+        setSubmittedData(data); // Store submitted data
+        nextStep() // Go to the final review page
+    };
+
+
+
+    if (step === 5 && submittedData) {
+        return (
+            <div className=" bg-white bg-opacity-90 rounded-lg border-2 border-gray-400 max-w-4xl mx-auto p-8">
+                <h2 className="text-4xl font-bold mb-6">Review Your Details</h2>
+                <ul className="space-y-4">
+                    <li><strong>First Name:</strong> {submittedData.firstName}</li>
+                    <li><strong>Middle Name:</strong> {submittedData.middleName || 'N/A'}</li>
+                    <li><strong>Last Name:</strong> {submittedData.lastName}</li>
+                    <li><strong>Phone:</strong> {submittedData.phone}</li>
+                    <li><strong>Birth Date:</strong> {submittedData.birthDate}</li>
+                    <li><strong>Gender:</strong> {submittedData.gender}</li>
+                </ul>
+                <button
+                    onClick={() => setStep(1)}
+                    className="mt-6 py-2 px-4 bg-blue-500 text-white rounded-md shadow hover:bg-blue-700"
+                >
+                    Go Back to Edit
+                </button>
+            </div>
+        );
+    }
     return (
-        <FormProvider {...register}>
-            <div className="max-w-4xl mx-auto p-8">
-                <form onSubmit={handleSubmit(onSubmit)} className='bg-white-300 bg-opacity-35 p-12'>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* First Name */}
-                        <div>
-                            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-                                First Name
-                            </label>
-                            <input
-                                {...register('firstName')}
-                                id="firstName"
-                                className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm ${errors.firstName ? 'border-red-500' : ''
-                                    }`}
-                                placeholder="Enter Your First Name"
-                            />
-                            {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName.message}</p>}
-                        </div>
+        <FormProvider {...methods.register}>
+            <ProgressBar currentStep={0} totalSteps={4} />
+            <div className=" bg-white bg-opacity-90 rounded-lg border-2 border-gray-400 max-w-4xl  mx-auto ">
+                <form onSubmit={methods.handleSubmit(handleSubmit)} className='px-10 py-5'>
+                    {step === 1 &&
+                        (
+                            <>
+                                <h2 className="text-4xl font-bold mb-10">Personal Details</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    {/* First Name */}
+                                    <div>
+                                        <label htmlFor="firstName" className="block text-2xl font-medium text-gray-700">
+                                            First Name
+                                        </label>
 
-                        {/* Middle Name */}
-                        <div>
-                            <label htmlFor="middleName" className="block text-sm font-medium text-gray-700">
-                                Middle Name
-                            </label>
-                            <input
-                                {...register('middleName')}
-                                id="middleName"
-                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                                placeholder="Enter Your Middle Name"
-                            />
-                        </div>
+                                        <input
+                                            {...methods.register('firstName')}
+                                            id="firstName"
+                                            className={`p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-medium text-left mt-1 block w-full shadow-sm ${methods.formState.errors.firstName ? 'border-red-500' : ''
+                                                }`}
+                                            placeholder="Enter Your First Name"
+                                        />
+                                        {methods.formState.errors.firstName && <p className="text-red-500 text-sm">{methods.formState.errors.firstName.message}</p>}
+                                    </div>
 
-                        {/* Last Name */}
-                        <div>
-                            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-                                Last Name
-                            </label>
-                            <input
-                                {...register('lastName')}
-                                id="lastName"
-                                className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm ${errors.lastName ? 'border-red-500' : ''
-                                    }`}
-                                placeholder="Enter Your Last Name"
-                            />
-                            {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName.message}</p>}
-                        </div>
+                                    {/* Middle Name */}
+                                    <div>
+                                        <label htmlFor="middleName" className="block text-2xl font-medium text-gray-700">
+                                            Middle Name
+                                        </label>
+                                        <input
+                                            {...methods.register('middleName')}
+                                            id="middleName"
+                                            className={`p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-medium text-left mt-1 block w-full shadow-sm ${methods.formState.errors.middleName ? 'border-red-500' : ''
+                                                }`} placeholder="Enter Your Middle Name"
+                                        />
+                                    </div>
 
-                        {/* Phone */}
-                        <div>
-                            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                                Phone
-                            </label>
-                            <input
-                                {...register('phone')}
-                                id="phone"
-                                className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm ${errors.phone ? 'border-red-500' : ''
-                                    }`}
-                                placeholder="98xxxxxxxx"
-                            />
-                            {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
-                        </div>
+                                    {/* Last Name */}
+                                    <div>
+                                        <label htmlFor="lastName" className="block text-2xl font-medium text-gray-700">
+                                            Last Name
+                                        </label>
+                                        <input
+                                            {...methods.register('lastName')}
+                                            id="lastName"
+                                            className={`p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-medium text-left mt-1 block w-full shadow-sm ${methods.formState.errors.lastName ? 'border-red-500' : ''
+                                                }`}
+                                            placeholder="Enter Your Last Name"
+                                        />
+                                        {methods.formState.errors.lastName && <p className="text-red-500 text-sm">{methods.formState.errors.lastName.message}</p>}
+                                    </div>
 
-                        {/* Birth Date */}
-                        <div>
-                            <label htmlFor="birthDate" className="block text-sm font-medium text-gray-700">
-                                Birth Date
-                            </label>
-                            <input
-                                {...register('birthDate')}
-                                id="birthDate"
-                                type="date"
-                                className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm ${errors.birthDate ? 'border-red-500' : ''
-                                    }`}
-                            />
-                            {errors.birthDate && <p className="text-red-500 text-sm">{errors.birthDate.message}</p>}
-                        </div>
-                        <div></div>
-                        {/* Gender */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Gender</label>
-                            <div className="flex items-center mt-1">
-                                <div className="flex items-center mr-4">
-                                    <input
-                                        {...register('gender')}
-                                        type="radio"
-                                        value="Male"
-                                        id="male"
-                                        className="h-4 w-4 border-gray-300"
-                                    />
-                                    <label htmlFor="male" className="ml-2 block text-sm text-gray-700">
-                                        Male
-                                    </label>
+                                    {/* Phone */}
+                                    <div>
+                                        <label htmlFor="phone" className="block text-2xl font-medium text-gray-700">
+                                            Phone
+                                        </label>
+                                        <input
+                                            {...methods.register('phone')}
+                                            id="phone"
+                                            className={`p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-medium text-left mt-1 block w-full shadow-sm ${methods.formState.errors.phone ? 'border-red-500' : ''
+                                                }`}
+                                            placeholder="98xxxxxxxx"
+                                        />
+                                        {methods.formState.errors.phone && <p className="text-red-500 text-sm">{methods.formState.errors.phone.message}</p>}
+                                    </div>
+
+                                    {/* Birth Date */}
+                                    <Date register={methods.register} errors={methods.formState.errors} />
+
+                                    <div></div>
+                                    {/* Gender */}
+                                    <div> <Gender /></div>
                                 </div>
-                                <div className="flex items-center mr-4">
-                                    <input
-                                        {...register('gender')}
-                                        type="radio"
-                                        value="Female"
-                                        id="female"
-                                        className="h-4 w-4 border-gray-300"
-                                    />
-                                    <label htmlFor="female" className="ml-2 block text-sm text-gray-700">
-                                        Female
-                                    </label>
+                                {/* Submit Button */}
+                                <div className="flex justify-end col-span-2 mt-12">
+                                    <button
+                                        onClick={nextStep}
+                                        type="button"
+                                        className=" w-36 py-2 px-3 bg-[#4DAF4E] text-white text-lg  font-bold rounded-md shadow hover:bg-[#43056C] focus:outline-none transition-all duration-1000 ease-out"
+                                    >
+                                        Next
+                                    </button>
                                 </div>
-                                <div className="flex items-center">
+                            </>
+                        )}
+                    {step === 2 && (
+                        <>
+                            <h2 className="text-4xl font-bold mb-10">Address</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {/* Country */}
+                                <div>
+                                    <label htmlFor="country" className="block text-2xl font-medium text-gray-700">
+                                        Country                                    </label>
+
+                                    <Country name="country" />
+                                </div>
+                                {/* District */}
+                                <div>
+                                    <label htmlFor="district" className="block text-2xl font-medium text-gray-700">
+                                        District                                    </label>
+
+                                    <District name="district" />
+                                </div>
+                                {/* Municipality */}
+                                <div>
+                                    <label htmlFor="municipality" className="block text-2xl font-medium text-gray-700">
+                                        Municipality/Local                                    </label>
+                                    <Municipality name="municipality" />
+                                </div>
+
+                                {/* CITY */}
+                                <div>
+                                    <label htmlFor="city" className="block text-2xl font-medium text-gray-700">
+                                        City                                </label>
+
                                     <input
-                                        {...register('gender')}
-                                        type="radio"
-                                        value="Others"
-                                        id="others"
-                                        className="h-4 w-4 border-gray-300"
+                                        {...methods.register('city')}
+                                        id="city"
+                                        className={`p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-medium text-left mt-1 block w-full shadow-sm ${methods.formState.errors.city ? 'border-red-500' : ''
+                                            }`}
+                                        placeholder="Eg: Kathmandu"
                                     />
-                                    <label htmlFor="others" className="ml-2 block text-sm text-gray-700">
-                                        Others
-                                    </label>
+                                    {methods.formState.errors.city && <p className="text-red-500 text-sm">{methods.formState.errors.city.message}</p>}
+                                </div>
+                                {/* Ward */}
+                                <div>
+                                    <label htmlFor="ward" className="block text-2xl font-medium text-gray-700">
+                                        Ward </label>
+
+                                    <input
+                                        {...methods.register('ward')}
+                                        id="ward"
+                                        className={`p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-medium text-left mt-1 block w-full shadow-sm ${methods.formState.errors.ward ? 'border-red-500' : ''
+                                            }`}
+                                        placeholder="Eg: 4"
+                                    />
+                                    {methods.formState.errors.ward && <p className="text-red-500 text-sm">{methods.formState.errors.ward.message}</p>}
                                 </div>
                             </div>
-                            {errors.gender && <p className="text-red-500 text-sm">{errors.gender.message}</p>}
-                        </div>
-                    </div>
-                    {/* Submit Button */}
-                    <div className="col-span-2 mt-12">
-                        <button
-                            type="submit"
-                            className="w-40 py-2 px-4 bg-green-600 text-white font-semibold rounded-md shadow hover:bg-green-700 focus:outline-none"
-                        >
-                            Next
-                        </button>
-                    </div>
+
+                            <div className="flex justify-end col-span-2 mt-12 gap-4">
+                                <button onClick={prevStep} type="button"
+                                    className=" w-36 py-2 px-3 bg-[#688968] text-white text-lg  font-bold rounded-md shadow hover:bg-[#43056C] focus:outline-none transition-all duration-1000 ease-out"
+                                >Back</button>
+                                <button
+                                    onClick={nextStep}
+                                    type="button"
+                                    className=" w-36 py-2 px-3 bg-[#4DAF4E] text-white text-lg  font-bold rounded-md shadow hover:bg-[#43056C] focus:outline-none transition-all duration-1000 ease-out"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </>
+                    )}
+                    {step === 3 && (
+                        <>
+                            <h2>Set Your Profile Picture</h2>
+                            <ImageInput name="profilePicture" />
+                            <div className="flex justify-end col-span-2 mt-12 gap-4">
+                                <button onClick={prevStep} type="button"
+                                    className=" w-36 py-2 px-3 bg-[#688968] text-white text-lg  font-bold rounded-md shadow hover:bg-[#43056C] focus:outline-none transition-all duration-1000 ease-out"
+                                >Back</button>
+                                <button
+                                    onClick={nextStep}
+                                    type="button"
+                                    className=" w-36 py-2 px-3 bg-[#4DAF4E] text-white text-lg  font-bold rounded-md shadow hover:bg-[#43056C] focus:outline-none transition-all duration-1000 ease-out"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </>
+                    )}
+                    {step === 4 && (
+                        <>
+                            <h2>Review Your Details</h2>
+                            {/* Display all entered information here */}
+                            <div className="flex justify-end col-span-2 mt-12 gap-4">
+                                <button onClick={prevStep} type="button"
+                                    className=" w-36 py-2 px-3 bg-[#688968] text-white text-lg  font-bold rounded-md shadow hover:bg-[#43056C] focus:outline-none transition-all duration-1000 ease-out"
+                                >Back</button>
+                                <button
+                                    onClick={nextStep}
+                                    type="button"
+                                    className=" w-36 py-2 px-3 bg-[#4DAF4E] text-white text-lg  font-bold rounded-md shadow hover:bg-[#43056C] focus:outline-none transition-all duration-1000 ease-out"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </>
+                    )}
+
                 </form>
             </div>
-        </FormProvider>
-    );
-};
+        </FormProvider >
+    )
+}
 
 export default RegistrationForm;
