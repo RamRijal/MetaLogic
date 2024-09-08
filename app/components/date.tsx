@@ -33,9 +33,9 @@ const Date = ({ register, errors }: DateProps) => {
         {...register('birthDate')}
         id="birthDate"
         type="date"
-        className={`p-3 px-5 border-2 border-gray-300 rounded-xl text-md font-medium text-left mt-1 block w-full shadow-sm ${errors.birthDate ? 'border-red-500' : ''
+        className={`p-3 px-5 border-2 border-gray-300 rounded-xl text-gray-400 text-md font-medium text-left mt-1 block w-full shadow-sm ${errors.birthDate ? 'border-red-500' : ''
           }`}
-        placeholder="Select Your Birth Date"
+        placeholder="MM/DD/YY"
       />
       {errors.birthDate && <p className="text-red-500 text-sm">{errors.birthDate.message}</p>}
     </div>

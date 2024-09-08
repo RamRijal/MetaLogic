@@ -13,7 +13,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps }) =>
   const progress = (currentStep / totalSteps) * 100;
 
   return (
-    <div className="flex items-center justify-center mb-8">
+    <div className="flex items-center justify-center mt-2 mb-8">
       <div className="w-2/5 h-2 bg-gray-300 rounded-full mb-5 relative">
         {/* Animated progress bar */}
         <div
@@ -27,8 +27,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps }) =>
             <div key={i} className="relative flex flex-col items-center">
               {/* Only show the hat image above the current step */}
               {i === currentStep - 1 && (
-                <div className="absolute -top-6 w-6 h-6">
-                  <Image src={hat} alt="Hat" layout="fill" objectFit="contain" />
+                <div className="absolute -top-10 w-12 h-12">
+                  <Image src={hat} alt="Hat" layout="fill" objectFit="contain"   />
                 </div>
               )}
               <div

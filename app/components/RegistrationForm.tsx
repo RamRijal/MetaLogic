@@ -66,13 +66,13 @@ const RegistrationForm = () => {
     });
 
     const handleSubmit = (data: RegistrationFormData) => {
-        setSubmittedData(data||{}); // Store submitted data
+        setSubmittedData(data || {}); // Store submitted data
         nextStep() // Go to the final review page
     };
 
 
 
-  
+
     return (
         <FormProvider {...methods}>
             <ProgressBar currentStep={step} totalSteps={4} />
@@ -256,36 +256,39 @@ const RegistrationForm = () => {
                             {/* Display all entered information here */}
                             <Image loading='lazy' alt='asd' src={Pic} width={200} height={200} />
                             <h2 className=" flex justify-left text-3xl font-bold py-5">Personal Details</h2>
-                            <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">First Name:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{firstName}</h2> */}
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Last Name:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{lastName}</h2> */}
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Middle Name:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{middleName}</h2> */}
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Phone:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{phone}</h2> */}
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">BirthDate:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{birthDate}</h2> */}
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Gender:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{gender}</h2> */}
-                            </div>
+                            {submittedData ?
+                                <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+                                    <h1 className=" flex justify-left text-2xl font-bold mb-1">First Name: </h1>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">{submittedData.firstName}</h2>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">Last Name:</h2>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">{submittedData.lastName}</h2>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">Middle Name:</h2>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">{submittedData.middleName}</h2>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">Phone:</h2>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">{submittedData.phone}</h2>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">BirthDate:</h2>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">{submittedData.birthDate}</h2>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">Gender:</h2>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">{submittedData.gender}</h2>
+                                </div>
+                                : ""}
                             <h2 className=" flex justify-left text-3xl font-bold py-5">Address</h2>
-                            <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Country:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{firstName}</h2> */}
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">District:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{lastName}</h2> */}
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Municipality:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{middleName}</h2> */}
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">City:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{phone}</h2> */}
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Ward:</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{birthDate}</h2> */}
-                                <h2 className=" flex justify-left text-2xl font-bold mb-1">Gender</h2>
-                                {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{gender}</h2> */}
-                            </div>
-
+                            {submittedData ?
+                                <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">Country:</h2>
+                                    {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{firstName}</h2> */}
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">District:</h2>
+                                    {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{lastName}</h2> */}
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">Municipality:</h2>
+                                    {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{middleName}</h2> */}
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">City:</h2>
+                                    {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{phone}</h2> */}
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">Ward:</h2>
+                                    {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{birthDate}</h2> */}
+                                    <h2 className=" flex justify-left text-2xl font-bold mb-1">Gender</h2>
+                                    {/* <h2 className=" flex justify-left text-2xl font-bold mb-1">{gender}</h2> */}
+                                </div>
+                                : ""}
                             <div className="flex justify-end col-span-2 mt-12 gap-4">
                                 <button onClick={prevStep} type="button"
                                     className=" w-36 py-2 px-3 bg-[#688968] text-white text-lg  font-bold rounded-md shadow hover:bg-[#43056C] focus:outline-none transition-all duration-1000 ease-out"
@@ -297,10 +300,16 @@ const RegistrationForm = () => {
                                 >
                                     Next
                                 </button>
+
                             </div>
                         </>
                     )}
-
+                    {
+                        step === 5 &&
+                        <>
+                            nextStep()
+                            <DetailsReview />
+                        </>}
                 </form>
             </div>
         </FormProvider >

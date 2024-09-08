@@ -1,55 +1,45 @@
-import React from 'react';
+import React from 'react'
 
-interface RegistrationFormData {
-    firstName: string;
-    middleName?: string;
-    lastName: string;
-    phone: string;
-    birthDate: string;
-    gender: 'Male' | 'Female' | 'Others';
-    country: string;
-    district: string;
-    municipality: string;
-    city: string;
-    ward: string;
-}
 
-interface DetailsProps {
-    submittedData?: RegistrationFormData | null; // Corrected the type definition
-}
+const Error = () => {
+  return (
+          <>
+              <section className="relative z-10 bg-primary py-[120px]">
+                  <div className="container mx-auto">
+                      <div className="-mx-4 flex">
+                          <div className="w-full px-4">
+                              <div className="mx-auto max-w-[400px] text-center">
+                                  <h2 className="mb-2 text-[50px] font-bold leading-none text-white sm:text-[80px] md:text-[100px]">
+                                      404
+                                  </h2>
+                                  <h4 className="mb-3 text-[22px] font-semibold leading-tight text-white">
+                                      Oops! That page can’t be found
+                                  </h4>
+                                  <p className="mb-8 text-lg text-white">
+                                      The page you are looking for it maybe deleted
+                                  </p>
+                                  <a
+                                      href="/"
+                                      className="inline-block rounded-lg border border-white px-8 py-3 text-center text-base font-semibold text-white transition hover:bg-white hover:text-primary"
+                                  >
+                                      Go To Home
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
 
-const DetailsReview: React.FC<DetailsProps> = ({ submittedData }) => {
-    const renderField = (label: string, value: string | undefined) => (
-        <p>
-            <strong>{label}:</strong> {value || 'N/A'}
-        </p>
-    );
-
-    if (!submittedData) {
-        return (
-            <div>
-                <h2>Review Your Details</h2>
-                <p>No data available.</p>
-            </div>
-        );
-    }
-
-    return (
-        <div>
-            <h2>Review Your Details</h2>
-            {renderField('First Name', submittedData.firstName)}
-            {renderField('Middle Name', submittedData.middleName)}
-            {renderField('Last Name', submittedData.lastName)}
-            {renderField('Phone', submittedData.phone)}
-            {renderField('Birth Date', submittedData.birthDate)}
-            {renderField('Gender', submittedData.gender)}
-            {renderField('Country', submittedData.country)}
-            {renderField('District', submittedData.district)}
-            {renderField('Municipality', submittedData.municipality)}
-            {renderField('City', submittedData.city)}
-            {renderField('Ward', submittedData.ward)}
-        </div>
-    );
+                  <div className="absolute left-0 top-0 -z-10 flex h-full w-full items-center justify-between space-x-5 md:space-x-8 lg:space-x-14">
+                      <div className="h-full w-1/3 bg-gradient-to-t from-[#FFFFFF14] to-[#C4C4C400]"></div>
+                      <div className="flex h-full w-1/3">
+                          <div className="h-full w-1/2 bg-gradient-to-b from-[#FFFFFF14] to-[#C4C4C400]"></div>
+                          <div className="h-full w-1/2 bg-gradient-to-t from-[#FFFFFF14] to-[#C4C4C400]"></div>
+                      </div>
+                      <div className="h-full w-1/3 bg-gradient-to-b from-[#FFFFFF14] to-[#C4C4C400]"></div>
+                  </div>
+              </section>
+          </>
+          );
 };
 
-export default DetailsReview;
+          export default Error;
